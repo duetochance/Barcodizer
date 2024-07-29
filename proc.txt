@@ -1,0 +1,26 @@
+ALTER PROCEDURE [dbo].[SPPQ_GENERABARCODE]
+    @data NVARCHAR(255),
+    @outputPath NVARCHAR(255) = 'C:\ProlabQ\PQBase2022\barcode',
+    @barcodeType NVARCHAR(50) = 'code128',
+    @width INT = 300,
+    @height INT = 10
+AS
+/*
+ USE PQBase2022
+EXEC SPPQ_GENERABARCODE '8888'
+EXEC SPPQ_GENERABARCODE '24LA99998', 'C:\ProlabQ\PQBase2022\barcode\PQ test\Test space'
+EXEC SPPQ_GENERABARCODE '24LA99955', 'C:\ProlabQ\PQBase2022','code39'
+P000000
+*/
+BEGIN
+set @outputPath = @outputPath--+'\'+@data
+print @outputPath
+    DECLARE @cmd NVARCHAR(1000)
+    --SET @cmd = '"C:\Users\samuele.bombieri\Desktop\barcodegenerated\Genbarcode.exe" --' + @data + ' --' + @outputPath +
+    --         ' --barcode_type ' + @barcodeType + ' --width ' + CAST(@width AS NVARCHAR) + ' --height ' + CAST(@height AS NVARCHAR)
+    --
+   SET @cmd = 'C:\ProlabQ\PQBase2022\Manutenzione\barcodizer.exe '+@data+' "'+@outputPath+'"'+' -codifica '+@barcodeType
+   -- SET @cmd = 'C:\ProlabQ\PQBase2022\Manutenzione\hw.exe'
+	PRINT '@cmd: '+@cmd
+    EXEC master..xp_cmdshell @cmd
+END
